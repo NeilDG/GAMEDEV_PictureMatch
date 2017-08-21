@@ -353,11 +353,11 @@ public class ViewHandler : MonoBehaviour {
 	private void RearrangeOverlay() {
 		View activeView = this.GetActiveView();
 		if(activeView == null || activeView.IsRootScreen()) {
-			//BlackOverlay.Hide();
+			BlackOverlay.Hide();
 			//EventBroadcaster.Instance.PostEvent(EventNames.ON_MAP_PAN_ENABLED);
 		}
 		else {
-			//BlackOverlay.Show(activeView.transform);
+			BlackOverlay.Show(activeView.transform);
 		}
 	}
 }

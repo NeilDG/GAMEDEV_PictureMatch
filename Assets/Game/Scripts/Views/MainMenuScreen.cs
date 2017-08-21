@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuScreen : View {
 
@@ -14,9 +15,7 @@ public class MainMenuScreen : View {
 	}
 
 	public void OnPlayClicked() {
-		//TEMP:
-		ViewHandler.Instance.Show(ViewNames.TEST_SCREEN_NAME);
-
+		SceneManager.LoadScene (SceneNames.GAME_SCENE);	
 	}
 
 	public void OnQuitClicked() {

@@ -8,4 +8,8 @@ using UnityEngine;
 /// </summary>
 public class ViewNames {
 	public const string TEST_SCREEN_NAME = "TestScreen";
+
+	public class DialogNames {
+		public const string TWO_CHOICE_DIALOG_NAME = "TwoChoiceDialog";
+	}
 }
