@@ -27,6 +27,8 @@ public class GameMechanicHandler : MonoBehaviour {
 	private List<PictureModel> generatedPictureModels = new List<PictureModel>(); //holds picture models to be referenced by several picture components
 	private int currentLevel = 1;
 
+	private int requiredNumMatches = 0;
+
 	void Awake() {
 		sharedInstance = this;
 	}
@@ -46,24 +48,24 @@ public class GameMechanicHandler : MonoBehaviour {
 		
 	}
 
-	/// <summary>
-	/// Returns the number of pictures to be spawned in the game board based on game level
-	/// </summary>
-	/// <returns>The number pictures based on level.</returns>
-	private int GetNumPicturesBasedOnLevel() {
-		return 5 + (this.currentLevel * 5);
+	public void IncreaseLevel() {
+		this.currentLevel++;
+		EventBroadcaster.Instance.PostEvent (EventNames.ON_INCREASE_LEVEL);
 	}
 
+	public int GetRequiredMatches() {
+		return this.requiredNumMatches;
+	}
 
 	/// <summary>
 	/// Generates a set of picture models.
 	/// </summary>
 	/// <returns>The picture models.</returns>
 	public PictureModel[] GeneratePictureModels() {
-		int numPicturesNeeded = this.GetNumPicturesBasedOnLevel () / 2;
+		this.requiredNumMatches = (4 + (this.currentLevel * 4)) / 2;
 
 		this.generatedPictureModels.Clear (); //clear models first
-		for (int i = 0; i < numPicturesNeeded; i++) {
+		for (int i = 0; i < requiredNumMatches; i++) {
 			this.generatedPictureModels.Add (new PictureModel (PictureModel.GenerateRandomType ()));
 		}
 

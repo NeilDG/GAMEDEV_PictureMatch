@@ -72,12 +72,14 @@ public class PictureComponent : MonoBehaviour, IPictureMatchListener {
 		this.shownImage.SetActive (false);
 		this.assignedButton.enabled = true;
 		this.assignedButton.interactable = true;
+	}
 
+	public void TweenedReset() {
+		this.StartCoroutine (this.DelayHide (0.0f));
 	}
 
 	public void AssignPictureModel(PictureModel pictureModel) {
 		this.pictureModel = pictureModel;
-		Debug.Log ("Picture type: " + this.pictureModel.GetPictureType ());
 		this.pictureImage.sprite = this.pictureSprites [PictureModel.ConvertTypeToInt (this.pictureModel.GetPictureType ())];
 	}
 
@@ -86,11 +88,11 @@ public class PictureComponent : MonoBehaviour, IPictureMatchListener {
 	}
 		
 	public void OnMatchInvalid() {
-		this.StartCoroutine (this.DelayHide ());
+		this.StartCoroutine (this.DelayHide (0.5f));
 	}
 
-	private IEnumerator DelayHide() {
-		yield return new WaitForSeconds (0.5f);
+	private IEnumerator DelayHide(float seconds) {
+		yield return new WaitForSeconds (seconds);
 
 		this.HideStep1 ();
 		this.HideStep2 ();

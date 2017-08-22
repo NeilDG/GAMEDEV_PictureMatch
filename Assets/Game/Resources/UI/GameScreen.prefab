@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7807b70222770ad47ad98f0980f3bc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_TIMER: 5
+  MAX_TIMER: 120
   timerText: {fileID: 114479512850892192}
   scoreText: {fileID: 114802956374986502}
 --- !u!114 &114472205235069538
@@ -425,6 +425,7 @@ MonoBehaviour:
   rectTransform: {fileID: 224337878620321378}
   pictureRefCopy: {fileID: 114891595365308502}
   pictureParent: {fileID: 224636314568746436}
+  pictureComponentsSpawned: []
 --- !u!114 &114641158642560182
 MonoBehaviour:
   m_ObjectHideFlags: 1

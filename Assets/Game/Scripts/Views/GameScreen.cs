@@ -11,11 +11,19 @@ public class GameScreen : View {
 	[SerializeField] private PictureComponent pictureRefCopy;
 	[SerializeField] private RectTransform pictureParent;
 
+
+	[SerializeField] private List<PictureComponent> pictureComponentsSpawned;
+
 	// Use this for initialization
 	void Start () {
 		this.pictureRefCopy.gameObject.SetActive (false);
 
 		this.InitializeGameBoard ();
+		EventBroadcaster.Instance.AddObserver (EventNames.ON_INCREASE_LEVEL, this.OnIncreasedLevel);
+	}
+
+	void OnDestroy() {
+		EventBroadcaster.Instance.RemoveObserver (EventNames.ON_INCREASE_LEVEL);
 	}
 
 	/// <summary>
@@ -37,16 +45,56 @@ public class GameScreen : View {
 			int firstIndex = Random.Range (0, pictureComponentList.Count);
 
 			//assign first pair then remove it from the list
+			this.pictureComponentsSpawned.Add (pictureComponentList [firstIndex]);
 			pictureComponentList [firstIndex].AssignPictureModel (generatedModels [i]);
 			pictureComponentList.RemoveAt (firstIndex);
 
 			int secondIndex = Random.Range (0, pictureComponentList.Count);
 
 			//assign second pair then remove it from the list
+			this.pictureComponentsSpawned.Add (pictureComponentList [secondIndex]);
 			pictureComponentList [secondIndex].AssignPictureModel (generatedModels [i]);
 			pictureComponentList.RemoveAt (secondIndex);
-
 		}
+	}
+
+	private void OnIncreasedLevel() {
+		PictureModel[] generatedModels = GameMechanicHandler.Instance.GeneratePictureModels ();
+		int additionalCount = (generatedModels.Length * 2) - this.pictureComponentsSpawned.Count;
+		Debug.Log ("Generated models: " +(generatedModels.Length * 2) + " Components spawend: " +this.pictureComponentsSpawned.Count+ " Additional count: " + additionalCount);
+		List<PictureComponent> componentList = new List<PictureComponent> ();
+
+		//reset all existing components
+		for (int i = 0; i < this.pictureComponentsSpawned.Count; i++) {
+			this.pictureComponentsSpawned [i].TweenedReset ();
+			componentList.Add (this.pictureComponentsSpawned [i]);
+		}
+
+		//instantiate additional components
+		for (int i = 0; i < additionalCount; i++) {
+			GameObject pictureObject = GameObject.Instantiate (this.pictureRefCopy.gameObject, this.pictureParent);
+			pictureObject.gameObject.SetActive (true);
+			PictureComponent pictureComponent = pictureObject.GetComponent<PictureComponent> ();
+			pictureComponent.Reset ();
+
+			this.pictureComponentsSpawned.Add (pictureComponent);
+			componentList.Add (pictureComponent);
+		}
+
+		for (int i = 0; i < generatedModels.Length; i++) {
+			int firstIndex = Random.Range (0, componentList.Count);
+
+			//assign first pair then remove it from the list
+			componentList [firstIndex].AssignPictureModel (generatedModels [i]);
+			componentList.RemoveAt (firstIndex);
+
+			int secondIndex = Random.Range (0, componentList.Count);
+
+			//assign second pair then remove it from the list
+			componentList [secondIndex].AssignPictureModel (generatedModels [i]);
+			componentList.RemoveAt (secondIndex);
+		}
+
 	}
 
 	public void OnPauseClicked() {

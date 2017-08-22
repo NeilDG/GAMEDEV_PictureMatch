@@ -23,6 +23,7 @@ public class PlayerScoreHandler : MonoBehaviour {
 	private bool gameOver = false;
 	private float ticks = 0;
 
+	private int levelScore = 0;
 	private int score = 0;
 	private int correctMatches = 0;
 	private int wrongMatches = 0;
@@ -81,7 +82,20 @@ public class PlayerScoreHandler : MonoBehaviour {
 
 	private void OnUpdateScore() {
 		this.score++;
+		this.levelScore++;
 		this.scoreText.text = "SCORE: " +this.score.ToString();
+
+		int requiredMatches = GameMechanicHandler.Instance.GetRequiredMatches ();
+		if (this.levelScore == requiredMatches) {
+			this.levelScore = 0;
+			//delay increase of level to allow the user to see their last mactch briefly
+			this.StartCoroutine(this.DelayIncreaseLevel(0.25f));
+		}
+	}
+
+	private IEnumerator DelayIncreaseLevel(float seconds) {
+		yield return new WaitForSeconds (seconds);
+		GameMechanicHandler.Instance.IncreaseLevel ();
 	}
 
 	private void OnCorrectMatch() {
