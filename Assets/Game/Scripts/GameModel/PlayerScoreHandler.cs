@@ -21,6 +21,7 @@ public class PlayerScoreHandler : MonoBehaviour {
 
 	private float timeLeft = 0.0f;
 	private bool gameOver = false;
+	private bool gamePaused = false;
 	private float ticks = 0;
 
 	private int levelScore = 0;
@@ -52,7 +53,7 @@ public class PlayerScoreHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (this.gameOver) {
+		if (this.gameOver || this.gamePaused) {
 			return;
 		}
 
@@ -67,7 +68,7 @@ public class PlayerScoreHandler : MonoBehaviour {
 				//stop game
 				this.gameOver = true;
 				ResultScreen resultScreen = (ResultScreen) ViewHandler.Instance.Show(ViewNames.RESULT_SCREEN_NAME);
-				resultScreen.SetResult (this.score, this.correctMatches, this.wrongMatches);
+				resultScreen.SetResult (GameMechanicHandler.Instance.GetCurrentLevel(), this.score, this.correctMatches, this.wrongMatches);
 			}
 		}
 
@@ -104,5 +105,13 @@ public class PlayerScoreHandler : MonoBehaviour {
 
 	private void OnWrongMatch() {
 		this.wrongMatches++;
+	}
+
+	public void PauseTimer() {
+		this.gamePaused = true;
+	}
+
+	public void ResumeTimer() {
+		this.gamePaused = false;
 	}
 }

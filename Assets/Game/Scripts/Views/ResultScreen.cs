@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class ResultScreen : View {
 
+	[SerializeField] private Text levelText;
 	[SerializeField] private Text scoreText;
 	[SerializeField] private Text correctMatchText;
 	[SerializeField] private Text wrongMatchText;
@@ -27,7 +28,8 @@ public class ResultScreen : View {
 		SceneManager.LoadScene (SceneNames.MAIN_MENU_SCENE);
 	}
 
-	public void SetResult(int score, int correctMatches, int wrongMatches) {
+	public void SetResult(int level, int score, int correctMatches, int wrongMatches) {
+		this.levelText.text = level.ToString () + " out of " + GameMechanicHandler.MAX_LEVEL + " levels";
 		this.scoreText.text = score.ToString ();
 		this.correctMatchText.text = correctMatches.ToString ();
 		this.wrongMatchText.text = wrongMatches.ToString ();

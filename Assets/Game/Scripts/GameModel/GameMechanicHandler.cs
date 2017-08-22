@@ -27,6 +27,8 @@ public class GameMechanicHandler : MonoBehaviour {
 	private List<PictureModel> generatedPictureModels = new List<PictureModel>(); //holds picture models to be referenced by several picture components
 	private int currentLevel = 1;
 
+	public const int MAX_LEVEL = 5;
+
 	private int requiredNumMatches = 0;
 
 	void Awake() {
@@ -50,7 +52,13 @@ public class GameMechanicHandler : MonoBehaviour {
 
 	public void IncreaseLevel() {
 		this.currentLevel++;
+		this.currentLevel = Mathf.Clamp (this.currentLevel, 1, MAX_LEVEL);
+
 		EventBroadcaster.Instance.PostEvent (EventNames.ON_INCREASE_LEVEL);
+	}
+
+	public int GetCurrentLevel() {
+		return this.currentLevel;
 	}
 
 	public int GetRequiredMatches() {
