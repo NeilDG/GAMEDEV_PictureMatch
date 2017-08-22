@@ -8,12 +8,14 @@ using DG.Tweening;
 /// Picture component attachable to a button
 /// Created By: NeilDG
 /// </summary>
-public class PictureComponent : MonoBehaviour {
+public class PictureComponent : MonoBehaviour, IPictureMatchListener {
 
 	[SerializeField] private Button assignedButton;
 	[SerializeField] private GameObject hiddenImage;
 	[SerializeField] private GameObject shownImage;
-	[SerializeField] private PictureModel.PictureType pictureType;
+	[SerializeField] private Image pictureImage;
+
+	[SerializeField] private Sprite[] pictureSprites;
 
 	private const float TWEEN_SPEED = 0.5f;
 
@@ -21,13 +23,18 @@ public class PictureComponent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.Reset ();
+		
 	}
 
 	public void OnClicked() {
 		this.assignedButton.interactable = false;
 		this.ShowStep1 ();
 		this.ShowStep2 ();
+
+		Parameters parameters = new Parameters ();
+		parameters.PutObjectExtra (GameMechanicHandler.PICTURE_MODEL_KEY, this.pictureModel);
+		parameters.PutObjectExtra (GameMechanicHandler.PICTURE_MATCH_LISTENER_KEY, this);
+		EventBroadcaster.Instance.PostEvent (EventNames.ON_PICTURE_CLICKED, parameters);
 	}
 
 	private void ShowStep1() {
@@ -42,7 +49,7 @@ public class PictureComponent : MonoBehaviour {
 		RectTransform rectTransform = this.shownImage.GetComponent<RectTransform> ();
 		rectTransform.localScale = new Vector3 (1.0f, 0.0f, 1.0f);
 
-		rectTransform.DOScaleY (1.0f, TWEEN_SPEED).OnComplete(this.OnImageShownComplete);
+		rectTransform.DOScaleY (1.0f, TWEEN_SPEED);
 	}
 
 	private void HideStep1() {
@@ -63,18 +70,35 @@ public class PictureComponent : MonoBehaviour {
 	public void Reset() {
 		this.hiddenImage.SetActive (true);
 		this.shownImage.SetActive (false);
+		this.assignedButton.enabled = true;
 		this.assignedButton.interactable = true;
+
 	}
 
-	private void OnImageShownComplete() {
-		this.StartCoroutine (this.DelayReset ());
+	public void AssignPictureModel(PictureModel pictureModel) {
+		this.pictureModel = pictureModel;
+		Debug.Log ("Picture type: " + this.pictureModel.GetPictureType ());
+		this.pictureImage.sprite = this.pictureSprites [PictureModel.ConvertTypeToInt (this.pictureModel.GetPictureType ())];
 	}
 
-	private IEnumerator DelayReset() {
-		yield return new WaitForSeconds (1.0f);
+	public bool HasPictureModel() {
+		return (this.pictureModel != null);
+	}
+		
+	public void OnMatchInvalid() {
+		this.StartCoroutine (this.DelayHide ());
+	}
+
+	private IEnumerator DelayHide() {
+		yield return new WaitForSeconds (0.5f);
+
 		this.HideStep1 ();
 		this.HideStep2 ();
 		this.assignedButton.interactable = true;
+	}
+
+	public void OnMatchValid() {
+
 	}
 	
 }
