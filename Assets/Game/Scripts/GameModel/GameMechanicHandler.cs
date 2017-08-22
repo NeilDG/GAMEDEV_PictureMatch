@@ -25,7 +25,7 @@ public class GameMechanicHandler : MonoBehaviour {
 	private IPictureMatchListener secondListener;
 
 	private List<PictureModel> generatedPictureModels = new List<PictureModel>(); //holds picture models to be referenced by several picture components
-	private int currentLevel = 5;
+	private int currentLevel = 1;
 
 	void Awake() {
 		sharedInstance = this;
@@ -37,6 +37,7 @@ public class GameMechanicHandler : MonoBehaviour {
 	}
 
 	void OnDestroy() {
+		sharedInstance = null;
 		EventBroadcaster.Instance.RemoveObserver (EventNames.ON_PICTURE_CLICKED);
 	}
 	
@@ -84,9 +85,14 @@ public class GameMechanicHandler : MonoBehaviour {
 			if (this.firstPicture.GetPictureType () == this.secondPicture.GetPictureType ()) {
 				this.firstListener.OnMatchValid ();
 				this.secondListener.OnMatchValid ();
+
+				EventBroadcaster.Instance.PostEvent (EventNames.ON_UPDATE_SCORE);
+				EventBroadcaster.Instance.PostEvent (EventNames.ON_CORRECT_MATCH);
 			} else {
 				this.firstListener.OnMatchInvalid ();
 				this.secondListener.OnMatchInvalid ();
+
+				EventBroadcaster.Instance.PostEvent (EventNames.ON_WRONG_MATCH);
 			}
 
 			//set to null after checking

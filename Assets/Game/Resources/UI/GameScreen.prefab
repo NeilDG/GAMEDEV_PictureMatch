@@ -179,13 +179,14 @@ GameObject:
   - component: {fileID: 224337878620321378}
   - component: {fileID: 222455960000160592}
   - component: {fileID: 114561443401141228}
+  - component: {fileID: 114467627378149540}
   m_Layer: 5
   m_Name: GameScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &114406448472256246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -267,6 +268,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114467627378149540
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1821289393245500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7807b70222770ad47ad98f0980f3bc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MAX_TIMER: 5
+  timerText: {fileID: 114479512850892192}
+  scoreText: {fileID: 114802956374986502}
 --- !u!114 &114472205235069538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -837,10 +852,10 @@ RectTransform:
   m_Father: {fileID: 224636314568746436}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 62.5, y: -62.5}
+  m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224636314568746436
 RectTransform:

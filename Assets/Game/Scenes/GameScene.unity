@@ -587,6 +587,11 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 125
       objectReference: {fileID: 0}
+    - target: {fileID: 114467627378149540, guid: 36fc93b8758482443a8fb79874a56358,
+        type: 2}
+      propertyPath: MAX_TIMER
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 36fc93b8758482443a8fb79874a56358, type: 2}
   m_IsPrefabParent: 0

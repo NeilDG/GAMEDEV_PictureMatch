@@ -17,7 +17,7 @@ public class PictureComponent : MonoBehaviour, IPictureMatchListener {
 
 	[SerializeField] private Sprite[] pictureSprites;
 
-	private const float TWEEN_SPEED = 0.5f;
+	private const float TWEEN_SPEED = 0.25f;
 
 	private PictureModel pictureModel;
 
