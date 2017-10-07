@@ -61,7 +61,7 @@ public class GameScreen : View {
 	private void OnIncreasedLevel() {
 		PictureModel[] generatedModels = GameMechanicHandler.Instance.GeneratePictureModels ();
 		int additionalCount = (generatedModels.Length * 2) - this.pictureComponentsSpawned.Count;
-		Debug.Log ("Generated models: " +(generatedModels.Length * 2) + " Components spawend: " +this.pictureComponentsSpawned.Count+ " Additional count: " + additionalCount);
+		Debug.Log ("Generated models: " +(generatedModels.Length * 2) + " Components spawned: " +this.pictureComponentsSpawned.Count+ " Additional count: " + additionalCount);
 		List<PictureComponent> componentList = new List<PictureComponent> ();
 
 		//reset all existing components
@@ -81,6 +81,13 @@ public class GameScreen : View {
 			componentList.Add (pictureComponent);
 		}
 
+		this.StartCoroutine (this.DelayAssignModel(generatedModels, componentList, 0.25f));
+
+	}
+
+	private IEnumerator DelayAssignModel(PictureModel[] generatedModels, List<PictureComponent> componentList, float seconds) {
+		yield return new WaitForSeconds (seconds);
+
 		for (int i = 0; i < generatedModels.Length; i++) {
 			int firstIndex = Random.Range (0, componentList.Count);
 
@@ -94,7 +101,6 @@ public class GameScreen : View {
 			componentList [secondIndex].AssignPictureModel (generatedModels [i]);
 			componentList.RemoveAt (secondIndex);
 		}
-
 	}
 
 	public void OnPauseClicked() {
